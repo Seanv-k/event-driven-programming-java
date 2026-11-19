@@ -1,0 +1,20 @@
+EDT OBSERVATIONS
+
+1. FreezeDemo.java (Bad Practice)
+
+When I clicked the button, the status changed to Working.
+The window temporarily stopped responding because Thread.sleep(5000)
+blocked the Event Dispatch Thread (EDT).
+
+2. FixedDemo.java (Good Practice)
+
+When I clicked the button, the status changed to Working and the
+button became disabled. I could still move and resize the window.
+After five seconds, the status changed to Done and the button
+became enabled again.
+
+CONCLUSION
+
+Long-running operations should run on background threads to prevent
+the GUI from freezing. SwingUtilities.invokeLater() is used to
+update GUI components safely on the EDT.
