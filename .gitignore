@@ -1,1 +1,3 @@
 *.class
+# Maven generated files
+**/target/
