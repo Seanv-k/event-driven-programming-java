@@ -1,3 +1,6 @@
 *.class
 # Maven generated files
 **/target/
+
+# Java saved data files
+*.ser
