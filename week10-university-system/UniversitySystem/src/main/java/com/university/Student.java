@@ -9,8 +9,16 @@ public class Student implements Serializable {
     private String name;
     private String registrationNumber;
     private String course;
+    private String email;
 
+    // Original constructor retained for compatibility.
     public Student(String name, String registrationNumber, String course) {
+        this(name, registrationNumber, course, null);
+    }
+
+    // Constructor including email for database integration.
+    public Student(String name, String registrationNumber,
+                   String course, String email) {
 
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Student name cannot be empty.");
@@ -24,9 +32,15 @@ public class Student implements Serializable {
             throw new IllegalArgumentException("Academic course cannot be empty.");
         }
 
+        if (email != null &&
+                (email.trim().isEmpty() || !email.contains("@"))) {
+            throw new IllegalArgumentException("Invalid email address.");
+        }
+
         this.name = name.trim();
         this.registrationNumber = registrationNumber.trim();
         this.course = course.trim();
+        this.email = email == null ? null : email.trim();
     }
 
     public String getName() {
@@ -39,6 +53,10 @@ public class Student implements Serializable {
 
     public String getCourse() {
         return course;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setName(String name) {

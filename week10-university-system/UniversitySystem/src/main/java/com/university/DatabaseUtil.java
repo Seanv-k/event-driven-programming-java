@@ -11,10 +11,16 @@ public class DatabaseUtil {
 
     private static final String USER = "root";
 
-    // Replace this with your local MySQL root password.
-    private static final String PASSWORD = "YOUR_PASSWORD";
-
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+
+        String password = System.getenv("DB_PASSWORD");
+
+        if (password == null || password.isEmpty()) {
+            throw new SQLException(
+                    "Database password not configured. Set DB_PASSWORD first."
+            );
+        }
+
+        return DriverManager.getConnection(URL, USER, password);
     }
 }

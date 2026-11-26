@@ -9,7 +9,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Load previously saved university data
         university = UniversitySystem.loadFromFile("university_data.ser");
 
         int choice;
@@ -38,76 +37,58 @@ public class Main {
             choice = readInt("Enter your choice: ");
 
             switch (choice) {
-
                 case 1:
                     addStudent();
                     break;
-
                 case 2:
                     addCourse();
                     break;
-
                 case 3:
                     registerStudent();
                     break;
-
                 case 4:
                     withdrawStudent();
                     break;
-
                 case 5:
                     searchStudent();
                     break;
-
                 case 6:
                     searchCourse();
                     break;
-
                 case 7:
                     updateStudent();
                     break;
-
                 case 8:
                     updateCourse();
                     break;
-
                 case 9:
                     deleteStudent();
                     break;
-
                 case 10:
                     deleteCourse();
                     break;
-
                 case 11:
                     university.displayStudents();
                     break;
-
                 case 12:
                     university.displayCourses();
                     break;
-
                 case 13:
                     university.displayCourseRegistrations();
                     break;
-
                 case 14:
                     displayStudentDetails();
                     break;
-
                 case 0:
                     System.out.println("Exiting University Management System.");
                     break;
-
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
 
         } while (choice != 0);
 
-        // Save all data before closing
         university.saveToFile("university_data.ser");
-
         input.close();
     }
 
@@ -117,10 +98,28 @@ public class Main {
             try {
                 System.out.print(message);
                 return Integer.parseInt(input.nextLine().trim());
-
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number.");
             }
+        }
+    }
+
+    private static String readAcademicProgramme() {
+
+        System.out.println("\nAvailable Academic Programmes:");
+        System.out.println("1. Bachelor of Computer Science");
+        System.out.println("2. Diploma in IT");
+
+        while (true) {
+            int choice = readInt("Select programme (1 or 2): ");
+
+            if (choice == 1) {
+                return "Bachelor of Computer Science";
+            } else if (choice == 2) {
+                return "Diploma in IT";
+            }
+
+            System.out.println("Invalid selection. Choose 1 or 2.");
         }
     }
 
@@ -133,13 +132,16 @@ public class Main {
             System.out.print("Enter registration number: ");
             String registrationNumber = input.nextLine();
 
-            System.out.print("Enter academic course: ");
-            String academicCourse = input.nextLine();
+            String academicCourse = readAcademicProgramme();
+
+            System.out.print("Enter student email: ");
+            String email = input.nextLine();
 
             Student student = new Student(
                     name,
                     registrationNumber,
-                    academicCourse
+                    academicCourse,
+                    email
             );
 
             university.addStudent(student);
@@ -161,7 +163,6 @@ public class Main {
             int capacity = readInt("Enter course capacity: ");
 
             Course course = new Course(code, name, capacity);
-
             university.addCourse(course);
 
         } catch (IllegalArgumentException e) {
@@ -220,7 +221,8 @@ public class Main {
             System.out.println("Student found: " + student.getName());
             System.out.println("Registration Number: "
                     + student.getRegistrationNumber());
-            System.out.println("Academic Course: " + student.getCourse());
+            System.out.println("Academic Programme: " + student.getCourse());
+            System.out.println("Email: " + student.getEmail());
         }
     }
 
@@ -248,8 +250,7 @@ public class Main {
         System.out.print("Enter new student name: ");
         String newName = input.nextLine();
 
-        System.out.print("Enter new academic course: ");
-        String newCourse = input.nextLine();
+        String newCourse = readAcademicProgramme();
 
         try {
             university.updateStudentDetails(
